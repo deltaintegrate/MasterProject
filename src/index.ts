@@ -46,9 +46,7 @@ export class main {
       const resultado1 = await getAllProducts(event);
       const resultado2 = await getTotalSalesByProduct(event);
       const resultado3 = await getProductWithHighestPrice(event);
-      console.log('Obtener todos los productos.', resultado1);
-      console.log('Obtener la cantidad total de ventas por producto.', resultado2);
-      console.log('Obtener el producto con el precio más alto.', resultado3);
+      console.log('Respuesta 3', {resultado1 , resultado2, resultado3});
 
     } catch (error)  {
       console.error("Error:", error);

@@ -62,7 +62,6 @@ let MysqlProductRepository = class MysqlProductRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const connection = yield this.pool.getConnection();
             const [rows, fields] = yield connection.query('SELECT * FROM producto');
-            this.close();
             return rows;
         });
     }

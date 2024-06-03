@@ -23,7 +23,7 @@ const getAllSales = (event, context) => __awaiter(void 0, void 0, void 0, functi
     };
 });
 exports.getAllSales = getAllSales;
-const getTotalSalesByProduct = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
+const getTotalSalesByProduct = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const totalSales = yield saleService.getTotalSalesByProduct();
     return {
         statusCode: 200,

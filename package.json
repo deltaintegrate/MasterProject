@@ -15,6 +15,7 @@
     "@types/mysql": "^2.15.26",
     "@types/node": "^20.13.0",
     "@types/pg": "^8.11.6",
+    "serverless": "^4.0.24",
     "serverless-plugin-typescript": "^2.1.5",
     "serverless-secrets-plugin": "^0.1.0",
     "typescript": "^5.4.5"

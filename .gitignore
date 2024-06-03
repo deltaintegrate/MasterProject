@@ -6,3 +6,13 @@ dist/
 
 # Ignorar el archivo .env
 .env
+
+
+# Ignorar la carpeta .build
+.build/
+
+# Ignorar la carpeta .serverless
+.serverless/
+
+# Ignorar la carpeta dist
+dist/

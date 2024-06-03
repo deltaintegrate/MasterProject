@@ -4,7 +4,7 @@ frameworkVersion: '4'
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs14.x
   region: us-east-1
   environment:
     DB_MYSQL_HOST: ${ssm:/supertienda/DB_MYSQL_HOST}
@@ -19,25 +19,25 @@ provider:
 
 functions:
   productGetAll:
-    handler: dist/index.productGetAll
+    handler: ./dist/index.productGetAll
     events:
       - http:
           path: products
           method: get
   productGetHighestPrice:
-    handler: dist/index.productGetHighestPrice
+    handler: ./dist/index.productGetHighestPrice
     events:
       - http:
           path: products/highest-price
           method: get
   saleGetAll:
-    handler: dist/index.saleGetAll
+    handler: ./dist/index.saleGetAll
     events:
       - http:
           path: sales
           method: get
   saleGetTotalByProduct:
-    handler: dist/index.saleGetTotalByProduct
+    handler: ./dist/index.saleGetTotalByProduct
     events:
       - http:
           path: sales/total-by-product

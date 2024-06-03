@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProductWithHighestPrice = exports.getAllProducts = void 0;
 const inversify_config_1 = __importDefault(require("../../../../inversify.config"));
 const productService = inversify_config_1.default.get("ProductService");
-const getAllProducts = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllProducts = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield productService.getAllProducts();
     return {
         statusCode: 200,
@@ -23,7 +23,7 @@ const getAllProducts = (event, context) => __awaiter(void 0, void 0, void 0, fun
     };
 });
 exports.getAllProducts = getAllProducts;
-const getProductWithHighestPrice = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
+const getProductWithHighestPrice = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const product = yield productService.getProductWithHighestPrice();
     return {
         statusCode: 200,

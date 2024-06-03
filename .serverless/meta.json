@@ -11,7 +11,7 @@
       "frameworkVersion": "4",
       "provider": {
         "name": "aws",
-        "runtime": "nodejs18.x",
+        "runtime": "nodejs14.x",
         "region": "us-east-1",
         "environment": {
           "DB_MYSQL_HOST": "localhost",
@@ -306,7 +306,7 @@
       },
       "functions": {
         "productGetAll": {
-          "handler": "dist/index.productGetAll",
+          "handler": "./dist/index.productGetAll",
           "events": [
             {
               "http": {
@@ -325,7 +325,7 @@
           }
         },
         "productGetHighestPrice": {
-          "handler": "dist/index.productGetHighestPrice",
+          "handler": "./dist/index.productGetHighestPrice",
           "events": [
             {
               "http": {
@@ -344,7 +344,7 @@
           }
         },
         "saleGetAll": {
-          "handler": "dist/index.saleGetAll",
+          "handler": "./dist/index.saleGetAll",
           "events": [
             {
               "http": {
@@ -363,7 +363,7 @@
           }
         },
         "saleGetTotalByProduct": {
-          "handler": "dist/index.saleGetTotalByProduct",
+          "handler": "./dist/index.saleGetTotalByProduct",
           "events": [
             {
               "http": {
@@ -393,13 +393,11 @@
         "secrets": "<REDACTED>"
       }
     },
-    "serviceRawFile": "service: supertienda\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs18.x\n  region: us-east-1\n  environment:\n    DB_MYSQL_HOST: ${ssm:/supertienda/DB_MYSQL_HOST}\n    DB_MYSQL_USER: ${ssm:/supertienda/DB_MYSQL_USER}\n    DB_MYSQL_PASSWORD: ${ssm:/supertienda/DB_MYSQL_PASSWORD}\n    DB_MYSQL_DATABASE: ${ssm:/supertienda/DB_MYSQL_DATABASE}\n  iamRoleStatements:\n    - Effect: \"Allow\"\n      Action:\n        - \"secretsmanager:GetSecretValue\"\n      Resource: \"*\"\n\nfunctions:\n  productGetAll:\n    handler: dist/index.productGetAll\n    events:\n      - http:\n          path: products\n          method: get\n  productGetHighestPrice:\n    handler: dist/index.productGetHighestPrice\n    events:\n      - http:\n          path: products/highest-price\n          method: get\n  saleGetAll:\n    handler: dist/index.saleGetAll\n    events:\n      - http:\n          path: sales\n          method: get\n  saleGetTotalByProduct:\n    handler: dist/index.saleGetTotalByProduct\n    events:\n      - http:\n          path: sales/total-by-product\n          method: get\n\nplugins:\n  - serverless-plugin-typescript\n  - serverless-secrets-plugin\n\ncustom:\n  serverless-plugin-typescript:\n    tsConfigFile: tsconfig.json\n  secrets:\n    DB_MYSQL_HOST: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_HOST\n    DB_MYSQL_USER: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_USER\n    DB_MYSQL_PASSWORD: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_PASSWORD\n    DB_MYSQL_DATABASE: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_DATABASE\n\n",
+    "serviceRawFile": "service: supertienda\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs14.x\n  region: us-east-1\n  environment:\n    DB_MYSQL_HOST: ${ssm:/supertienda/DB_MYSQL_HOST}\n    DB_MYSQL_USER: ${ssm:/supertienda/DB_MYSQL_USER}\n    DB_MYSQL_PASSWORD: ${ssm:/supertienda/DB_MYSQL_PASSWORD}\n    DB_MYSQL_DATABASE: ${ssm:/supertienda/DB_MYSQL_DATABASE}\n  iamRoleStatements:\n    - Effect: \"Allow\"\n      Action:\n        - \"secretsmanager:GetSecretValue\"\n      Resource: \"*\"\n\nfunctions:\n  productGetAll:\n    handler: ./dist/index.productGetAll\n    events:\n      - http:\n          path: products\n          method: get\n  productGetHighestPrice:\n    handler: ./dist/index.productGetHighestPrice\n    events:\n      - http:\n          path: products/highest-price\n          method: get\n  saleGetAll:\n    handler: ./dist/index.saleGetAll\n    events:\n      - http:\n          path: sales\n          method: get\n  saleGetTotalByProduct:\n    handler: ./dist/index.saleGetTotalByProduct\n    events:\n      - http:\n          path: sales/total-by-product\n          method: get\n\nplugins:\n  - serverless-plugin-typescript\n  - serverless-secrets-plugin\n\ncustom:\n  serverless-plugin-typescript:\n    tsConfigFile: tsconfig.json\n  secrets:\n    DB_MYSQL_HOST: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_HOST\n    DB_MYSQL_USER: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_USER\n    DB_MYSQL_PASSWORD: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_PASSWORD\n    DB_MYSQL_DATABASE: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_DATABASE\n\n",
     "command": [
       "deploy"
     ],
-    "options": {
-      "debug": "*"
-    },
+    "options": {},
     "error": {
       "message": "Cannot read properties of undefined (reading 'getLineAndCharacterOfPosition')",
       "stack": "TypeError: Cannot read properties of undefined (reading 'getLineAndCharacterOfPosition')\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:85:57\n    at Array.forEach (<anonymous>)\n    at Object.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:81:24)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:4:12)\n    at Object.run (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:76:12)\n    at TypeScriptPlugin.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:167:50)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:4:12)\n    at TypeScriptPlugin.compileTs (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:151:16)\n    at TypeScriptPlugin.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:58:28)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:4:12)\n    at before:package:createDeploymentArtifacts (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:57:63)\n    at PluginManager.runHooks (file:///Users/macbookpro/.serverless/releases/4.0.33/package/dist/sf-core.js:1022:9297)\n    at async PluginManager.invoke (file:///Users/macbookpro/.serverless/releases/4.0.33/package/dist/sf-core.js:1022:9998)"

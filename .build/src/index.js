@@ -12,19 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.main = exports.saleGetTotalByProduct = exports.saleGetAll = exports.productGetHighestPrice = exports.productGetAll = void 0;
+exports.main = void 0;
 require("reflect-metadata");
 const inversify_config_1 = __importDefault(require("./inversify.config"));
 const productHandler_1 = require("./product/infraestructure/lambdas/handlers/productHandler");
 const saleHandler_1 = require("./product/infraestructure/lambdas/handlers/saleHandler");
-exports.productGetAll = productHandler_1.getAllProducts;
-exports.productGetHighestPrice = productHandler_1.getProductWithHighestPrice;
-exports.saleGetAll = saleHandler_1.getAllSales;
-exports.saleGetTotalByProduct = saleHandler_1.getTotalSalesByProduct;
 class main {
     static execute() {
         return __awaiter(this, void 0, void 0, function* () {
             const productService = inversify_config_1.default.get("ProductService");
+            const event = {
+                body: null,
+                headers: {},
+                multiValueHeaders: {},
+                httpMethod: 'GET',
+                isBase64Encoded: false,
+                path: '/',
+                pathParameters: null,
+                queryStringParameters: null,
+                multiValueQueryStringParameters: null,
+                stageVariables: null,
+                requestContext: {},
+                resource: '',
+            };
+            const context = {};
             try {
                 //Respuesta 1.1
                 console.info("Respuesta 1.1");
@@ -44,6 +55,10 @@ class main {
                 console.info("Respuesta 2");
                 console.log(yield productService.getQuery());
                 console.info("Respuesta 3");
+                const resultado1 = yield (0, productHandler_1.getAllProducts)(event);
+                const resultado2 = yield (0, saleHandler_1.getTotalSalesByProduct)(event);
+                const resultado3 = yield (0, productHandler_1.getProductWithHighestPrice)(event);
+                console.log('Respuesta 3', { resultado1, resultado2, resultado3 });
             }
             catch (error) {
                 console.error("Error:", error);
