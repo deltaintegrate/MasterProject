@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const inversify_1 = require("inversify");
+const productService_1 = require("./product/application/productService");
+const PostgresProductRepository_1 = require("./product/infraestructure/PostgresProductRepository");
+const MysqlProductRepository_1 = require("./product/infraestructure/MysqlProductRepository");
+const saleService_1 = require("./product/application/saleService");
+const MySqlSaleRepository_1 = require("./product/infraestructure/MySqlSaleRepository");
+const container = new inversify_1.Container();
+container.bind("ProductService").to(productService_1.ProductService);
+container.bind("SaleService").to(saleService_1.SaleService);
+container.bind("ProductRepository").to(PostgresProductRepository_1.ProductRepository);
+container.bind("IProductRepository").to(MysqlProductRepository_1.MysqlProductRepository);
+container.bind("ISaleRepository").to(MySqlSaleRepository_1.MySQLSaleRepository);
+exports.default = container;

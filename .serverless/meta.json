@@ -1,0 +1,434 @@
+{
+  "/Users/macbookpro/Documents/2024/masterproject": {
+    "versionSfCore": null,
+    "versionFramework": "4.0.33",
+    "isWithinCompose": false,
+    "composeOrgName": null,
+    "servicePath": "/Users/macbookpro/Documents/2024/masterproject",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "supertienda",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "region": "us-east-1",
+        "environment": {
+          "DB_MYSQL_HOST": "localhost",
+          "DB_MYSQL_USER": "root",
+          "DB_MYSQL_PASSWORD": "<REDACTED>",
+          "DB_MYSQL_DATABASE": "supertienda"
+        },
+        "iamRoleStatements": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "secretsmanager:GetSecretValue"
+            ],
+            "Resource": "*"
+          }
+        ],
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ServerlessDeploymentBucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketEncryption": {
+                  "ServerSideEncryptionConfiguration": [
+                    {
+                      "ServerSideEncryptionByDefault": {
+                        "SSEAlgorithm": "AES256"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ServerlessDeploymentBucketPolicy": {
+              "Type": "AWS::S3::BucketPolicy",
+              "Properties": {
+                "Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "PolicyDocument": {
+                  "Statement": [
+                    {
+                      "Action": "s3:*",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Resource": [
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              },
+                              "/*"
+                            ]
+                          ]
+                        },
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              }
+                            ]
+                          ]
+                        }
+                      ],
+                      "Condition": {
+                        "Bool": {
+                          "aws:SecureTransport": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ProductGetAllLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/supertienda-dev-productGetAll"
+              }
+            },
+            "ProductGetHighestPriceLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/supertienda-dev-productGetHighestPrice"
+              }
+            },
+            "SaleGetAllLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/supertienda-dev-saleGetAll"
+              }
+            },
+            "SaleGetTotalByProductLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/supertienda-dev-saleGetTotalByProduct"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "supertienda",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/supertienda-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/supertienda-dev*:*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "secretsmanager:GetSecretValue"
+                          ],
+                          "Resource": "*"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "supertienda",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": {
+                "Ref": "ServerlessDeploymentBucket"
+              }
+            }
+          }
+        },
+        "coreCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ServerlessDeploymentBucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketEncryption": {
+                  "ServerSideEncryptionConfiguration": [
+                    {
+                      "ServerSideEncryptionByDefault": {
+                        "SSEAlgorithm": "AES256"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ServerlessDeploymentBucketPolicy": {
+              "Type": "AWS::S3::BucketPolicy",
+              "Properties": {
+                "Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "PolicyDocument": {
+                  "Statement": [
+                    {
+                      "Action": "s3:*",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Resource": [
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              },
+                              "/*"
+                            ]
+                          ]
+                        },
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              }
+                            ]
+                          ]
+                        }
+                      ],
+                      "Condition": {
+                        "Bool": {
+                          "aws:SecureTransport": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": {
+                "Ref": "ServerlessDeploymentBucket"
+              }
+            }
+          }
+        }
+      },
+      "functions": {
+        "productGetAll": {
+          "handler": "dist/index.productGetAll",
+          "events": [
+            {
+              "http": {
+                "path": "products",
+                "method": "get"
+              }
+            }
+          ],
+          "name": "supertienda-dev-productGetAll",
+          "package": {
+            "exclude": [
+              "node_modules/serverless-plugin-typescript"
+            ],
+            "include": [],
+            "patterns": []
+          }
+        },
+        "productGetHighestPrice": {
+          "handler": "dist/index.productGetHighestPrice",
+          "events": [
+            {
+              "http": {
+                "path": "products/highest-price",
+                "method": "get"
+              }
+            }
+          ],
+          "name": "supertienda-dev-productGetHighestPrice",
+          "package": {
+            "exclude": [
+              "node_modules/serverless-plugin-typescript"
+            ],
+            "include": [],
+            "patterns": []
+          }
+        },
+        "saleGetAll": {
+          "handler": "dist/index.saleGetAll",
+          "events": [
+            {
+              "http": {
+                "path": "sales",
+                "method": "get"
+              }
+            }
+          ],
+          "name": "supertienda-dev-saleGetAll",
+          "package": {
+            "exclude": [
+              "node_modules/serverless-plugin-typescript"
+            ],
+            "include": [],
+            "patterns": []
+          }
+        },
+        "saleGetTotalByProduct": {
+          "handler": "dist/index.saleGetTotalByProduct",
+          "events": [
+            {
+              "http": {
+                "path": "sales/total-by-product",
+                "method": "get"
+              }
+            }
+          ],
+          "name": "supertienda-dev-saleGetTotalByProduct",
+          "package": {
+            "exclude": [
+              "node_modules/serverless-plugin-typescript"
+            ],
+            "include": [],
+            "patterns": []
+          }
+        }
+      },
+      "plugins": [
+        "serverless-plugin-typescript",
+        "serverless-secrets-plugin"
+      ],
+      "custom": {
+        "serverless-plugin-typescript": {
+          "tsConfigFile": "tsconfig.json"
+        },
+        "secrets": "<REDACTED>"
+      }
+    },
+    "serviceRawFile": "service: supertienda\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs18.x\n  region: us-east-1\n  environment:\n    DB_MYSQL_HOST: ${ssm:/supertienda/DB_MYSQL_HOST}\n    DB_MYSQL_USER: ${ssm:/supertienda/DB_MYSQL_USER}\n    DB_MYSQL_PASSWORD: ${ssm:/supertienda/DB_MYSQL_PASSWORD}\n    DB_MYSQL_DATABASE: ${ssm:/supertienda/DB_MYSQL_DATABASE}\n  iamRoleStatements:\n    - Effect: \"Allow\"\n      Action:\n        - \"secretsmanager:GetSecretValue\"\n      Resource: \"*\"\n\nfunctions:\n  productGetAll:\n    handler: dist/index.productGetAll\n    events:\n      - http:\n          path: products\n          method: get\n  productGetHighestPrice:\n    handler: dist/index.productGetHighestPrice\n    events:\n      - http:\n          path: products/highest-price\n          method: get\n  saleGetAll:\n    handler: dist/index.saleGetAll\n    events:\n      - http:\n          path: sales\n          method: get\n  saleGetTotalByProduct:\n    handler: dist/index.saleGetTotalByProduct\n    events:\n      - http:\n          path: sales/total-by-product\n          method: get\n\nplugins:\n  - serverless-plugin-typescript\n  - serverless-secrets-plugin\n\ncustom:\n  serverless-plugin-typescript:\n    tsConfigFile: tsconfig.json\n  secrets:\n    DB_MYSQL_HOST: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_HOST\n    DB_MYSQL_USER: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_USER\n    DB_MYSQL_PASSWORD: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_PASSWORD\n    DB_MYSQL_DATABASE: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_DATABASE\n\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {
+      "debug": "*"
+    },
+    "error": {
+      "message": "Cannot read properties of undefined (reading 'getLineAndCharacterOfPosition')",
+      "stack": "TypeError: Cannot read properties of undefined (reading 'getLineAndCharacterOfPosition')\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:85:57\n    at Array.forEach (<anonymous>)\n    at Object.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:81:24)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:4:12)\n    at Object.run (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/typescript.js:76:12)\n    at TypeScriptPlugin.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:167:50)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:4:12)\n    at TypeScriptPlugin.compileTs (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:151:16)\n    at TypeScriptPlugin.<anonymous> (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:58:28)\n    at Generator.next (<anonymous>)\n    at /Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:4:12)\n    at before:package:createDeploymentArtifacts (/Users/macbookpro/Documents/2024/masterproject/node_modules/serverless-plugin-typescript/dist/src/index.js:57:63)\n    at PluginManager.runHooks (file:///Users/macbookpro/.serverless/releases/4.0.33/package/dist/sf-core.js:1022:9297)\n    at async PluginManager.invoke (file:///Users/macbookpro/.serverless/releases/4.0.33/package/dist/sf-core.js:1022:9998)"
+    },
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "4eba6bd7-efc0-4839-b072-d4bb60d972d6",
+    "orgName": "deltaintegrate",
+    "userId": "jSHm06YbGV0pXWCRlj",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "deltaintegrate",
+    "subscription": null,
+    "userEmail": "leonardocastri1997@gmail.com",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "341512582183",
+    "versionSf": "4.0.33",
+    "serviceProviderAwsCfStackName": "supertienda-dev",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}

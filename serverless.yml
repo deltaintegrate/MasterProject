@@ -1,0 +1,58 @@
+service: supertienda
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    DB_MYSQL_HOST: ${ssm:/supertienda/DB_MYSQL_HOST}
+    DB_MYSQL_USER: ${ssm:/supertienda/DB_MYSQL_USER}
+    DB_MYSQL_PASSWORD: ${ssm:/supertienda/DB_MYSQL_PASSWORD}
+    DB_MYSQL_DATABASE: ${ssm:/supertienda/DB_MYSQL_DATABASE}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "secretsmanager:GetSecretValue"
+      Resource: "*"
+
+functions:
+  productGetAll:
+    handler: dist/index.productGetAll
+    events:
+      - http:
+          path: products
+          method: get
+  productGetHighestPrice:
+    handler: dist/index.productGetHighestPrice
+    events:
+      - http:
+          path: products/highest-price
+          method: get
+  saleGetAll:
+    handler: dist/index.saleGetAll
+    events:
+      - http:
+          path: sales
+          method: get
+  saleGetTotalByProduct:
+    handler: dist/index.saleGetTotalByProduct
+    events:
+      - http:
+          path: sales/total-by-product
+          method: get
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-secrets-plugin
+
+custom:
+  serverless-plugin-typescript:
+    tsConfigFile: tsconfig.json
+  secrets:
+    DB_MYSQL_HOST: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_HOST
+    DB_MYSQL_USER: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_USER
+    DB_MYSQL_PASSWORD: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_PASSWORD
+    DB_MYSQL_DATABASE: arn:aws:secretsmanager:us-east-1:341512582183:secret:supertienda-SBVTBk/DB_MYSQL_DATABASE
+

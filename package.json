@@ -11,11 +11,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.138",
+    "@types/mysql": "^2.15.26",
     "@types/node": "^20.13.0",
     "@types/pg": "^8.11.6",
+    "serverless-plugin-typescript": "^2.1.5",
+    "serverless-secrets-plugin": "^0.1.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
     "@types/inversify": "^2.0.33",
     "@types/pg-pool": "^2.0.6",
     "class-validator": "^0.14.1",
@@ -23,6 +28,7 @@
     "express": "^4.19.2",
     "inversify": "^6.0.2",
     "inversify-binding-decorators": "^4.0.0",
+    "mysql2": "^3.10.0",
     "pg": "^8.11.5",
     "pg-pool": "^3.6.2",
     "reflect-metadata": "^0.2.2"
