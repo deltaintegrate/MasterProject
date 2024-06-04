@@ -2,12 +2,24 @@ import { injectable } from "inversify";
 import mysql, { Connection, Pool } from 'mysql2/promise';
 import { ISaleRepository } from "../domain/repositories/ISaleRepository";
 import { SaleDto } from "../../core/dto/saleDto";
+import container from "../../inversify.config";
+import { AwsService } from "./aws/secret";
 
 @injectable()
 export class MySQLSaleRepository implements ISaleRepository {
   private pool: Pool;
+  public envFunction: () => void;
 
   constructor(){
+    this.envFunction = async () => {
+      const awsService = container.get<AwsService>("AwsService");
+      const secretValue = await awsService.getSecret("supertienda");
+      const secretJson = JSON.parse(secretValue);
+
+      process.env.DB_MYSQL_HOST = secretJson['DB_MYSQL_HOST'];
+      process.env.DB_MYSQL_USER = secretJson['DB_MYSQL_USER'];
+      process.env.DB_MYSQL_DATABASE = secretJson['DB_MYSQL_DATABASE'];
+    },
     this.pool = mysql.createPool({
       host: process.env.DB_MYSQL_HOST,
       user: process.env.DB_MYSQL_USER,

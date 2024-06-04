@@ -3,21 +3,37 @@ import { injectable } from "inversify";
 import mysql, { Connection, Pool } from 'mysql2/promise';
 import { ProductDto } from "../../core/dto/productDto";
 import { IProductRepository } from "../domain/repositories/IProductRepository";
+import container from "../../inversify.config";
+import { AwsService } from "./aws/secret";
+
 
 dotenv.config();
 
 @injectable()
 export class MysqlProductRepository implements IProductRepository {
   private pool: Pool;
+  public envFunction: () => void;
 
   constructor(){
-    this.pool = mysql.createPool({
+    this.envFunction = async () => {
+      const awsService = container.get<AwsService>("AwsService");
+      const secretValue = await awsService.getSecret("supertienda");
+      const secretJson = JSON.parse(secretValue);
+
+      process.env.DB_MYSQL_HOST = secretJson['DB_MYSQL_HOST'];
+      process.env.DB_MYSQL_USER = secretJson['DB_MYSQL_USER'];
+      process.env.DB_MYSQL_DATABASE = secretJson['DB_MYSQL_DATABASE'];
+    },
+    this.pool = 
+    mysql.createPool({
       host: process.env.DB_MYSQL_HOST,
       user: process.env.DB_MYSQL_USER,
       password: '',
       database: process.env.DB_MYSQL_DATABASE,
     });
   }
+
+
   public async getAll(): Promise<ProductDto[]> {
     const connection: Connection = await this.pool.getConnection();
     const [rows, fields] = await connection.query('SELECT * FROM producto');
