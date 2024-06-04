@@ -16,13 +16,7 @@ export class MysqlProductRepository implements IProductRepository {
 
   constructor(){
     this.envFunction = async () => {
-      const awsService = container.get<AwsService>("AwsService");
-      const secretValue = await awsService.getSecret("supertienda");
-      const secretJson = JSON.parse(secretValue);
 
-      process.env.DB_MYSQL_HOST = secretJson['DB_MYSQL_HOST'];
-      process.env.DB_MYSQL_USER = secretJson['DB_MYSQL_USER'];
-      process.env.DB_MYSQL_DATABASE = secretJson['DB_MYSQL_DATABASE'];
     },
     this.pool = 
     mysql.createPool({
